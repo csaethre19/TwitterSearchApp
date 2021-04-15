@@ -3,7 +3,6 @@ package twitterSearch;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.princeton.cs.algs4.ST;
 import twitter4j.PagableResponseList;
 import twitter4j.RateLimitStatus;
 import twitter4j.Relationship;
@@ -27,7 +26,6 @@ public class PersonSearch {
 	private String username;
 	private List<User> followers;
 	private List<String> edges;
-	private ST<Integer, String> st;
 
 	/**
 	 * Initializes the fields <code>twitter</code> and <code>username</code>.
@@ -42,7 +40,6 @@ public class PersonSearch {
 		this.username = username;
 		this.followers = new ArrayList<>();
 		this.edges = new ArrayList<>();
-		this.st = new ST<>();
 		getFollowers();
 	}
 
@@ -56,16 +53,14 @@ public class PersonSearch {
 		// followers into
 		PagableResponseList<User> followersList;
 		long cursor = -1L;
-		
+
 		try {
 			// Fetching follower list for specified user
 			followersList = twitter.getFollowersList(username, cursor, 10);
 			// Filling list of users and printing the names
 			for (int i = 0; i < followersList.size(); i++) {
 				User user = followersList.get(i);
-				String name = user.getName();
 				followers.add(user);
-				st.put(i, name);
 			}
 
 		} catch (TwitterException e) {
@@ -106,44 +101,25 @@ public class PersonSearch {
 						boolean sourceFollowingTarget = rel.isSourceFollowingTarget();
 
 						if (sourceFollowedByTarget || sourceFollowingTarget)
-							edges.add(i+ " " + j);
+							edges.add(followers.get(i).getScreenName() + " " + followers.get(j).getScreenName());
 					} else
 						return;
 
 				}
 			}
 		} catch (TwitterException e) {
-			e.printStackTrace();
+			System.out.println("Rate limit exceeded, please try again in 15 minutes. Thank you.");
 		}
 	}
 
 	/**
+	 * Returns the edges represented in a list of strings. Names are separated by a
+	 * space indicating there is connection between the two users.
 	 * 
-	 * @param index
-	 * @return
+	 * @return list of edges
 	 */
-	public String getFollowersName(int index) {
-		return st.get(index);
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public ST<Integer, String> getSymbolTable() {
-		return st;
-	}
-
-	/**
-	 * Displays the edges found in the random subset of followers based on
-	 * <code>username</code>.
-	 * 
-	 */
-	public void showEdges() {
-		// Prints the edges found
-		for (String edge : edges) {
-			System.out.println(edge);
-		}
+	public List<String> getEdges() {
+		return this.edges;
 	}
 
 	/**
@@ -170,9 +146,8 @@ public class PersonSearch {
 	public static void main(String[] args) {
 		Twitter twitter = TwitterAuth.getTwitterInstance();
 		PersonSearch personSearch = new PersonSearch(twitter, "char_saethre");
-		personSearch.showEdges();
-		for (Integer key : personSearch.getSymbolTable().keys()) {
-			System.out.println(key + ": " + personSearch.getSymbolTable().get(key));
+		for (String edge : personSearch.getEdges()) {
+			System.out.println(edge);
 		}
 
 	}
