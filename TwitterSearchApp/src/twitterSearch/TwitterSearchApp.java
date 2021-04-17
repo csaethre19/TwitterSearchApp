@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
@@ -62,7 +63,6 @@ public class TwitterSearchApp extends JFrame {
 					frame.setVisible(true);
 					Image icon = Toolkit.getDefaultToolkit().getImage("src/twitterSearch/Resources/twitter_icon.png");
 					frame.setIconImage(icon);
-					frame.setLayout(null);
 
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -137,7 +137,10 @@ public class TwitterSearchApp extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (comboBox.getSelectedItem().equals("Person")) {
+				if (textField.getText().equals("")) {
+					JOptionPane.showInternalMessageDialog(null, "Please enter a query before clicking search.");
+				}
+				else if (comboBox.getSelectedItem().equals("Person")) {
 					PersonSearch ps = new PersonSearch(twitter, textField.getText());
 					String timeLine = "";
 					for (String tweet : ps.getTimeline()) {
