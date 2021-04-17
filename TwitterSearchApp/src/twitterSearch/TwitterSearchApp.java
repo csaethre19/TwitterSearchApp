@@ -24,7 +24,14 @@ import javax.swing.BoxLayout;
 import java.awt.FlowLayout;
 import java.awt.ComponentOrientation;
 import javax.swing.JSeparator;
-
+/**
+ * Supplies an interface for the user to look up topics in Twitter.
+ * User can visually see the data in a graph.
+ * 
+ * @author Charlotte Saethre
+ * @author Briana Murdock
+ *
+ */
 public class TwitterSearchApp extends JFrame {
 
 	private JPanel contentPane;
@@ -59,11 +66,20 @@ public class TwitterSearchApp extends JFrame {
 				
 	}
 
+	/**
+	 * Creates the App title.
+	 * 
+	 * @param titleLabel
+	 */
 	private void createTitle(JLabel titleLabel) {
 		titleLabel.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 20));
 		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 	}
 
+	/**
+	 * Creates the bottom panel that displays the authors
+	 *  of the program.
+	 */
 	private void createAuthorPanel() {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -95,18 +111,23 @@ public class TwitterSearchApp extends JFrame {
 		panel_1.add(textField);
 		textField.setColumns(10);
 		
+		// Creates the search button.
 		JButton btnNewButton = new JButton("Search");
 		panel_1.add(btnNewButton);
 		
+		// Creates exit button.
 		JButton btnNewButton_1 = new JButton("Exit");
 		panel_1.add(btnNewButton_1);
 		
+		// Creates the option to view all the data.
 		JScrollPane scrollPane = new JScrollPane();
 		contentPane.add(scrollPane);
 		
+		// Creates the box for user to search a topic.
 		JTextPane textPane = new JTextPane();
 		scrollPane.setViewportView(textPane);
 		
+		// Results label.
 		JLabel resultsLabel = new JLabel("Results");
 		resultsLabel.setForeground(Color.WHITE);
 		resultsLabel.setOpaque(true);
@@ -115,6 +136,11 @@ public class TwitterSearchApp extends JFrame {
 		scrollPane.setColumnHeaderView(resultsLabel);
 	}
 
+	/**
+	 * Creates the drop-down box.
+	 * 
+	 * @param comboBox
+	 */
 	private void createComboBox(JComboBox comboBox) {
 		comboBox.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		comboBox.setPrototypeDisplayValue("Select...");
