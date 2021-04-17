@@ -40,7 +40,6 @@ public class PersonSearch {
 		this.username = username;
 		this.followers = new ArrayList<>();
 		this.edges = new ArrayList<>();
-		getFollowers();
 	}
 
 	/**
@@ -48,7 +47,7 @@ public class PersonSearch {
 	 * 
 	 * @param username username of person to search for
 	 */
-	private void getFollowers() {
+	public void getFollowers() {
 		// Setting up list for followers to iterate through and list to insert the
 		// followers into
 		PagableResponseList<User> followersList;
