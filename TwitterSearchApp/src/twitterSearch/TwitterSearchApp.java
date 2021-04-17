@@ -8,9 +8,14 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
+
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JComboBox;
@@ -24,6 +29,9 @@ import twitter4j.Twitter;
 
 import java.awt.Dimension;
 import javax.swing.BoxLayout;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+
 import java.awt.FlowLayout;
 import java.awt.ComponentOrientation;
 import javax.swing.JSeparator;
@@ -52,6 +60,10 @@ public class TwitterSearchApp extends JFrame {
 				try {
 					TwitterSearchApp frame = new TwitterSearchApp();
 					frame.setVisible(true);
+					Image icon = Toolkit.getDefaultToolkit().getImage("src/twitterSearch/Resources/twitter_icon.png");
+					frame.setIconImage(icon);
+					frame.setLayout(null);
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
