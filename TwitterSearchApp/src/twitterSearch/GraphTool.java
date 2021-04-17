@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import edu.princeton.cs.algs4.Cycle;
 import edu.princeton.cs.algs4.Graph;
 import edu.princeton.cs.algs4.SymbolGraph;
 
@@ -15,6 +16,7 @@ import edu.princeton.cs.algs4.SymbolGraph;
 public class GraphTool {
 	private List<String> edges;
 	private Graph graph;
+	private SymbolGraph sg;
 	private final String FILE_PATH = "src/twitterSearch/Resources/graph.txt";
 	
 	public GraphTool(List<String> edges) {
@@ -23,7 +25,7 @@ public class GraphTool {
 		
 		// Construct symbol graph
 		String delimiter = " ";
-		SymbolGraph sg = new SymbolGraph(FILE_PATH, delimiter);
+		sg = new SymbolGraph(FILE_PATH, delimiter);
 		graph = sg.graph();
 	}
 
@@ -42,26 +44,21 @@ public class GraphTool {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 
-	 * @return
 	 */
-	public boolean hasCycle() {
-		return false; // TODO
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public List<String> getCyclePath() {
-		return null; // TODO
+	public void getCycle() {
+		Cycle cycle = new Cycle(graph);
+		for (Integer c : cycle.cycle()) {
+			System.out.println(sg.nameOf(c));
+		}
 	}
 	
 	public static void main(String[] args) {
 		PersonSearch ps = new PersonSearch(TwitterAuth.getTwitterInstance(), "char_saethre");
 		List<String> edges = ps.getEdges();
 		GraphTool graphTool = new GraphTool(edges);
+		graphTool.getCycle();
 	}
 }
