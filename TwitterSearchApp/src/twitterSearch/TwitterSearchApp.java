@@ -19,6 +19,9 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.border.MatteBorder;
+
+import twitter4j.Twitter;
+
 import java.awt.Dimension;
 import javax.swing.BoxLayout;
 import java.awt.FlowLayout;
@@ -36,6 +39,9 @@ public class TwitterSearchApp extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
+	private JComboBox<String> comboBox;
+	private Twitter twitter;
+	private JTextPane textPane;
 
 	/**
 	 * Launch the application.
@@ -57,6 +63,7 @@ public class TwitterSearchApp extends JFrame {
 	 * Create the frame.
 	 */
 	public TwitterSearchApp() {
+		twitter = TwitterAuth.getTwitterInstance();
 		setForeground(new Color(135, 206, 250));
 		setBackground(new Color(135, 206, 250));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -97,7 +104,7 @@ public class TwitterSearchApp extends JFrame {
 		contentPane.add(panel_1);
 		panel_1.setLayout(new GridLayout(0, 2, 0, 0));
 		
-		JComboBox comboBox = new JComboBox();
+		comboBox = new JComboBox<>();
 		comboBox.setBackground(new Color(248, 248, 255));
 		createComboBox(comboBox);
 		panel_1.add(comboBox);
@@ -114,6 +121,30 @@ public class TwitterSearchApp extends JFrame {
 		// Creates the search button.
 		JButton btnNewButton = new JButton("Search");
 		panel_1.add(btnNewButton);
+		btnNewButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (comboBox.getSelectedItem().equals("Person")) {
+					PersonSearch ps = new PersonSearch(twitter, textField.getText());
+					String timeLine = "";
+					for (String tweet : ps.getTimeline()) {
+						timeLine += tweet + "\n";
+					}
+					textPane.setText(timeLine);
+				}
+				else if (comboBox.getSelectedItem().equals("Query")) {
+					QuerySearch qs = new QuerySearch(twitter, textField.getText());
+					String tweets = "";
+					for (String tweet : qs.getTweetsInformation()) {
+						tweets += tweet + "\n";
+					}
+					textPane.setText(tweets);
+					
+				}
+			}
+			
+		});
 		
 		// Creates exit button.
 		JButton btnNewButton_1 = new JButton("Exit");
@@ -123,8 +154,7 @@ public class TwitterSearchApp extends JFrame {
 		JScrollPane scrollPane = new JScrollPane();
 		contentPane.add(scrollPane);
 		
-		// Creates the box for user to search a topic.
-		JTextPane textPane = new JTextPane();
+		textPane = new JTextPane();
 		scrollPane.setViewportView(textPane);
 		
 		// Results label.
@@ -141,7 +171,7 @@ public class TwitterSearchApp extends JFrame {
 	 * 
 	 * @param comboBox
 	 */
-	private void createComboBox(JComboBox comboBox) {
+	private void createComboBox(JComboBox<String> comboBox) {
 		comboBox.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		comboBox.setPrototypeDisplayValue("Select...");
 		comboBox.addItem("Select");
