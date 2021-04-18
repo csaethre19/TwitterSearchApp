@@ -1,6 +1,5 @@
 package twitterSearch;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -9,8 +8,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
-import javax.swing.UIDefaults;
-import javax.swing.UIManager;
 
 import java.awt.Font;
 import java.awt.Color;
@@ -29,13 +26,7 @@ import javax.swing.border.MatteBorder;
 import twitter4j.Twitter;
 
 import java.awt.Dimension;
-import javax.swing.BoxLayout;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 
-import java.awt.FlowLayout;
-import java.awt.ComponentOrientation;
-import javax.swing.JSeparator;
 /**
  * Supplies an interface for the user to look up topics in Twitter.
  * User can visually see the data in a graph.
@@ -51,7 +42,7 @@ public class TwitterSearchApp extends JFrame {
 	private JComboBox<String> comboBox;
 	private Twitter twitter;
 	private JTextPane textPane;
-
+	
 	/**
 	 * Launch the application.
 	 */
@@ -131,9 +122,9 @@ public class TwitterSearchApp extends JFrame {
 		textField.setColumns(10);
 		
 		// Creates the search button.
-		JButton btnNewButton = new JButton("Search");
-		panel_1.add(btnNewButton);
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton btnSearchButton = new JButton("Search");
+		panel_1.add(btnSearchButton);
+		btnSearchButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -141,9 +132,9 @@ public class TwitterSearchApp extends JFrame {
 					JOptionPane.showInternalMessageDialog(null, "Please enter a query before clicking search.");
 				}
 				else if (comboBox.getSelectedItem().equals("Person")) {
-					PersonSearch ps = new PersonSearch(twitter, textField.getText());
+					PersonSearch person = new PersonSearch(twitter, textField.getText());
 					String timeLine = "";
-					for (String tweet : ps.getTimeline()) {
+					for (String tweet : person.getTimeline()) {
 						timeLine += tweet + "\n";
 					}
 					textPane.setText(timeLine);
@@ -161,9 +152,19 @@ public class TwitterSearchApp extends JFrame {
 			
 		});
 		
-		// Creates exit button.
-		JButton btnNewButton_1 = new JButton("Exit");
-		panel_1.add(btnNewButton_1);
+		// Creates Graph Button
+		JButton btnGraphButton = new JButton("Graph");
+		panel_1.add(btnGraphButton);
+		btnGraphButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				PersonSearch person = new PersonSearch(twitter, textField.getText());
+				GraphTool graphTool = new GraphTool(person.getEdges(), person.getFollowers());
+				graphTool.drawGraph();
+			}
+			
+		});
 		
 		// Creates the option to view all the data.
 		JScrollPane scrollPane = new JScrollPane();
