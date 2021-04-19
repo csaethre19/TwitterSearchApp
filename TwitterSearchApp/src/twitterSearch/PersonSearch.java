@@ -25,6 +25,7 @@ public class PersonSearch {
 	private Twitter twitter;
 	private String username;
 	private List<User> followers;
+	private List<String> followersNames;
 	private List<String> edges;
 
 	/**
@@ -39,8 +40,9 @@ public class PersonSearch {
 		this.twitter = twitter;
 		this.username = username;
 		this.followers = new ArrayList<>();
+		this.followersNames = new ArrayList<>();
 		this.edges = new ArrayList<>();
-		getFollowers();
+		collectFollowers();
 	}
 
 	/**
@@ -48,7 +50,7 @@ public class PersonSearch {
 	 * 
 	 * @param username username of person to search for
 	 */
-	private void getFollowers() {
+	public void collectFollowers() {
 		// Setting up list for followers to iterate through and list to insert the
 		// followers into
 		PagableResponseList<User> followersList;
@@ -61,6 +63,7 @@ public class PersonSearch {
 			for (int i = 0; i < followersList.size(); i++) {
 				User user = followersList.get(i);
 				followers.add(user);
+				followersNames.add(user.getScreenName());
 			}
 
 		} catch (TwitterException e) {
@@ -68,6 +71,11 @@ public class PersonSearch {
 		}
 
 		createFollowersEdges();
+
+	}
+	
+	public List<String> getFollowers() {
+		return this.followersNames;
 	}
 
 	/**

@@ -28,7 +28,7 @@ public class QuerySearch {
 	private Twitter twitter;
 	private String query;
 	private List<Status> tweets;
-	//private List<String> edges;
+	// private List<String> edges;
 
 	/**
 	 * Initializes the fields <code>twitter</code> and <code>query</code>. Starts
@@ -40,7 +40,7 @@ public class QuerySearch {
 	public QuerySearch(Twitter twitter, String query) {
 		this.twitter = twitter;
 		this.query = query;
-		//edges = new ArrayList<>();
+		// edges = new ArrayList<>();
 		searchQuery();
 	}
 
@@ -63,68 +63,6 @@ public class QuerySearch {
 		}
 
 	}
-//
-//	// Gets IDs of the users that tweeted the first 10 tweets that were returned
-//	private long[] getListOfUserIds(int index) {
-//		long[] userIds = null;
-//
-//		for (int i = 0; i < 10; i++) {
-//			IDs ids;
-//			try {
-//				ids = twitter.getRetweeterIds(tweets.get(index).getId(), -1L);
-//				userIds = ids.getIDs();
-//			} catch (TwitterException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//
-//		return userIds;
-//	}
-
-	/**
-	 * Finds relationships between different users given the list of user IDs
-	 * provided from the list of tweets returned by <code>SearchQuery</code>.
-	 * Creates edges when there are users that has a follower connection.
-	 * 
-	 * @return list of strings representing edges found
-	 */
-//	private void createFollowersEdges() {
-//		long[] userIds = getListOfUserIds(0);
-//
-//		boolean exceeded = false;
-//		try {
-//			for (int i = 0; i < userIds.length; i++) {
-//				for (int j = i + 1; j < userIds.length; j++) {
-//					if (!exceeded) {
-//						Relationship rel = twitter.showFriendship(userIds[i], userIds[j]);
-//
-//						// Deal with rate limit
-//						RateLimitStatus relRateLimit = rel.getRateLimitStatus();
-//						if (relRateLimit.getRemaining() == 1) {
-//							exceeded = true;
-//							break;
-//						}
-//
-//						boolean sourceFollowed = rel.isSourceFollowedByTarget();
-//						boolean sourceFollowing = rel.isSourceFollowingTarget();
-//
-//						if (sourceFollowed || sourceFollowing) {
-//							// Add edge
-//							String source = twitter.showUser(userIds[i]).getName();
-//							String target = twitter.showUser(userIds[j]).getName();
-//							edges.add(source + " " + target);
-//						}
-//					} else {
-//						return;
-//					}
-//
-//				}
-//			}
-//		} catch (TwitterException e) {
-//			e.printStackTrace();
-//		}
-//
-//	}
 
 	/**
 	 * Returns a list of strings that provide the necessary tweet information to be
@@ -171,6 +109,7 @@ public class QuerySearch {
 		return priorityTweets;
 	}
 
+	/********** TEST CLIENT **********/
 	public static void main(String[] args) {
 		Twitter twitter = TwitterAuth.getTwitterInstance();
 		QuerySearch qs = new QuerySearch(twitter, "Elon Musk");
