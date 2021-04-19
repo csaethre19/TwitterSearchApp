@@ -93,31 +93,55 @@ public class TwitterSearchApp extends JFrame {
 		contentPane.setLayout(new GridLayout(0, 1, 0, 0));
 		contentPane.add(titleLabel);
 		
-		JPanel panel_1 = new JPanel();
-		contentPane.add(panel_1);
-		panel_1.setLayout(new GridLayout(0, 2, 0, 0));
+		JPanel searchPanel = new JPanel();
+		contentPane.add(searchPanel);
+		searchPanel.setLayout(new GridLayout(1, 0, 0, 0));
 		
 		JComboBox comboBox = new JComboBox();
+		searchPanel.add(comboBox);
 		comboBox.setBackground(new Color(248, 248, 255));
 		createComboBox(comboBox);
-		panel_1.add(comboBox);
 		
 		textField = new JTextField();
+		searchPanel.add(textField);
 		textField.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		textField.setHorizontalAlignment(SwingConstants.CENTER);
 		textField.setPreferredSize(new Dimension(10, 10));
 		textField.setMinimumSize(new Dimension(10, 20));
 		textField.setBorder(new MatteBorder(0, 10, 0, 10, (Color) Color.BLUE));
-		panel_1.add(textField);
 		textField.setColumns(10);
 		
+		JPanel buttonPanel = new JPanel();
+		contentPane.add(buttonPanel);
+		buttonPanel.setLayout(new GridLayout(0, 3, 0, 0));
+		
 		// Creates the search button.
-		JButton btnNewButton = new JButton("Search");
-		panel_1.add(btnNewButton);
+		JButton searchButton = new JButton("Search");
+		searchButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		buttonPanel.add(searchButton);
 		
 		// Creates exit button.
-		JButton btnNewButton_1 = new JButton("Exit");
-		panel_1.add(btnNewButton_1);
+		JButton graphButton = new JButton("Graph");
+		graphButton.setEnabled(false);
+		graphButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		buttonPanel.add(graphButton);
+		
+		JButton trendsButton = new JButton("Trends");
+		trendsButton.setEnabled(false);
+		trendsButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		buttonPanel.add(trendsButton);
 		
 		// Creates the option to view all the data.
 		JScrollPane scrollPane = new JScrollPane();
