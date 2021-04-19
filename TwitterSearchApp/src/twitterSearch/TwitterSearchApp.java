@@ -1,20 +1,21 @@
 package twitterSearch;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Scanner;
-
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -25,10 +26,6 @@ import javax.swing.border.MatteBorder;
 import twitter4j.Twitter;
 
 import java.awt.Dimension;
-import javax.swing.BoxLayout;
-import java.awt.FlowLayout;
-import java.awt.ComponentOrientation;
-import javax.swing.JSeparator;
 
 /**
  * Supplies an interface for the user to look up topics in Twitter. User can
@@ -42,9 +39,10 @@ public class TwitterSearchApp extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
-	int searchCount = 0;
-	Scanner scanner = new Scanner(System.in);
-	String text;
+	private JComboBox<String> comboBox;
+	private Twitter twitter;
+	private JTextPane textPane;
+	private JButton btnGraphButton;
 
 	/**
 	 * Launch the application.
@@ -55,6 +53,9 @@ public class TwitterSearchApp extends JFrame {
 				try {
 					TwitterSearchApp frame = new TwitterSearchApp();
 					frame.setVisible(true);
+					Image icon = Toolkit.getDefaultToolkit().getImage("src/twitterSearch/Resources/twitter_icon.png");
+					frame.setIconImage(icon);
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -66,6 +67,7 @@ public class TwitterSearchApp extends JFrame {
 	 * Create the frame.
 	 */
 	public TwitterSearchApp() {
+		twitter = TwitterAuth.getTwitterInstance();
 		setForeground(new Color(135, 206, 250));
 		setBackground(new Color(135, 206, 250));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -104,12 +106,12 @@ public class TwitterSearchApp extends JFrame {
 		contentPane.add(searchPanel);
 		searchPanel.setLayout(new GridLayout(1, 0, 0, 0));
 
-		JComboBox comboBox = new JComboBox();
-		searchPanel.add(comboBox);
+		comboBox = new JComboBox<>();
 		comboBox.setBackground(new Color(248, 248, 255));
 		createComboBox(comboBox);
+		searchPanel.add(comboBox);
 
-		textField = new JTextField(text);
+		textField = new JTextField();
 		searchPanel.add(textField);
 		textField.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		textField.setHorizontalAlignment(SwingConstants.CENTER);
@@ -117,60 +119,75 @@ public class TwitterSearchApp extends JFrame {
 		textField.setMinimumSize(new Dimension(10, 20));
 		textField.setBorder(new MatteBorder(0, 10, 0, 10, (Color) Color.BLUE));
 		textField.setColumns(10);
-		textField.setText(text);
 
 		JPanel buttonPanel = new JPanel();
 		contentPane.add(buttonPanel);
 		buttonPanel.setLayout(new GridLayout(0, 3, 0, 0));
 
-		// Creates exit button.
-		JButton graphButton = new JButton("Graph");
-		getSearchCount();
-		disableButton(graphButton);
+		// Creates the search button.
+		JButton btnSearchButton = new JButton("Search");
+		buttonPanel.add(btnSearchButton);
+		btnSearchButton.addActionListener(new ActionListener() {
 
-		graphButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
+				if (textField.getText().equals("")) {
+					JOptionPane.showInternalMessageDialog(null, "Please enter a query before clicking search.");
+				} else if (comboBox.getSelectedItem().equals("Person")) {
+					btnGraphButton.setEnabled(true);
+					PersonSearch person = new PersonSearch(twitter, textField.getText());
+					String timeLine = "";
+					for (String tweet : person.getTimeline()) {
+						timeLine += tweet + "\n";
+					}
+					textPane.setText(timeLine);
+				} else if (comboBox.getSelectedItem().equals("Query")) {
+					QuerySearch qs = new QuerySearch(twitter, textField.getText());
+					String tweets = "";
+					for (String tweet : qs.getTweetsInformation()) {
+						tweets += tweet + "\n";
+					}
+					textPane.setText(tweets);
+
+				}
+			}
+
+		});
+
+		btnGraphButton = new JButton("Graph");
+		buttonPanel.add(btnGraphButton);
+		btnGraphButton.setEnabled(false);
+		btnGraphButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (textField.getText().equals("")) {
+					JOptionPane.showInternalMessageDialog(null, "Please enter a query before clicking graph.");
+				} else {
+					PersonSearch person = new PersonSearch(twitter, textField.getText());
+					GraphTool graphTool = new GraphTool(person.getEdges(), person.getFollowers());
+					graphTool.drawGraph();
+				}
 
 			}
 
 		});
-		buttonPanel.add(graphButton);
 
 		JButton trendsButton = new JButton("Trends");
-		getSearchCount();
-		disableButton(trendsButton);
+		trendsButton.setEnabled(true);
 		trendsButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				// TODO
 			}
 		});
 		buttonPanel.add(trendsButton);
-
-		// Creates the search button.
-		JButton searchButton = new JButton("Search");
-		searchButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				searchCount++;
-				enableButton(trendsButton);
-				enableButton(graphButton);
-				textField.getText();
-			}
-		});
-		buttonPanel.add(searchButton);
 
 		// Creates the option to view all the data.
 		JScrollPane scrollPane = new JScrollPane();
 		contentPane.add(scrollPane);
 
-		// Creates the box for user to search a topic.
-		JTextPane textPane = new JTextPane();
+		textPane = new JTextPane();
 		scrollPane.setViewportView(textPane);
-
-		Twitter twitter = TwitterAuth.getTwitterInstance();
-		PersonSearch personSearch = new PersonSearch(twitter, textPane.getText());
-		for (String edge : personSearch.getEdges()) {
-			textPane.setText(edge);
-		}
 
 		// Results label.
 		JLabel resultsLabel = new JLabel("Results");
@@ -181,29 +198,12 @@ public class TwitterSearchApp extends JFrame {
 		scrollPane.setColumnHeaderView(resultsLabel);
 	}
 
-	private void getSearchCount() {
-		searchCount = this.searchCount;
-
-	}
-
-	private void disableButton(JButton graphButton) {
-		if (searchCount == 0) {
-			graphButton.setEnabled(false);
-		}
-	}
-
-	private void enableButton(JButton graphButton) {
-		if (searchCount > 0) {
-			graphButton.setEnabled(true);
-		}
-	}
-
 	/**
 	 * Creates the drop-down box.
 	 * 
 	 * @param comboBox
 	 */
-	private void createComboBox(JComboBox comboBox) {
+	private void createComboBox(JComboBox<String> comboBox) {
 		comboBox.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		comboBox.setPrototypeDisplayValue("Select...");
 		comboBox.addItem("Select");
