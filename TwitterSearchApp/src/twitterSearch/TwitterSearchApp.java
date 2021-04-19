@@ -42,6 +42,7 @@ public class TwitterSearchApp extends JFrame {
 	private JComboBox<String> comboBox;
 	private Twitter twitter;
 	private JTextPane textPane;
+	private JButton btnGraphButton;
 
 	/**
 	 * Launch the application.
@@ -119,9 +120,13 @@ public class TwitterSearchApp extends JFrame {
 		panel_1.add(textField);
 		textField.setColumns(10);
 
+		JPanel buttonPanel = new JPanel();
+		contentPane.add(buttonPanel);
+		buttonPanel.setLayout(new GridLayout(0, 3, 0, 0));
+
 		// Creates the search button.
 		JButton btnSearchButton = new JButton("Search");
-		panel_1.add(btnSearchButton);
+		buttonPanel.add(btnSearchButton);
 		btnSearchButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -129,6 +134,7 @@ public class TwitterSearchApp extends JFrame {
 				if (textField.getText().equals("")) {
 					JOptionPane.showInternalMessageDialog(null, "Please enter a query before clicking search.");
 				} else if (comboBox.getSelectedItem().equals("Person")) {
+					btnGraphButton.setEnabled(true);
 					PersonSearch person = new PersonSearch(twitter, textField.getText());
 					String timeLine = "";
 					for (String tweet : person.getTimeline()) {
@@ -148,9 +154,9 @@ public class TwitterSearchApp extends JFrame {
 
 		});
 
-		// Creates Graph Button
-		JButton btnGraphButton = new JButton("Graph");
-		panel_1.add(btnGraphButton);
+		btnGraphButton = new JButton("Graph");
+		buttonPanel.add(btnGraphButton);
+		btnGraphButton.setEnabled(false);
 		btnGraphButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -166,6 +172,15 @@ public class TwitterSearchApp extends JFrame {
 			}
 
 		});
+
+		JButton trendsButton = new JButton("Trends");
+		trendsButton.setEnabled(true);
+		trendsButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// TODO
+			}
+		});
+		buttonPanel.add(trendsButton);
 
 		// Creates the option to view all the data.
 		JScrollPane scrollPane = new JScrollPane();
