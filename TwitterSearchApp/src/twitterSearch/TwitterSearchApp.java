@@ -102,22 +102,22 @@ public class TwitterSearchApp extends JFrame {
 		contentPane.setLayout(new GridLayout(0, 1, 0, 0));
 		contentPane.add(titleLabel);
 
-		JPanel panel_1 = new JPanel();
-		contentPane.add(panel_1);
-		panel_1.setLayout(new GridLayout(0, 2, 0, 0));
+		JPanel searchPanel = new JPanel();
+		contentPane.add(searchPanel);
+		searchPanel.setLayout(new GridLayout(1, 0, 0, 0));
 
 		comboBox = new JComboBox<>();
 		comboBox.setBackground(new Color(248, 248, 255));
 		createComboBox(comboBox);
-		panel_1.add(comboBox);
+		searchPanel.add(comboBox);
 
 		textField = new JTextField();
+		searchPanel.add(textField);
 		textField.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		textField.setHorizontalAlignment(SwingConstants.CENTER);
 		textField.setPreferredSize(new Dimension(10, 10));
 		textField.setMinimumSize(new Dimension(10, 20));
 		textField.setBorder(new MatteBorder(0, 10, 0, 10, (Color) Color.BLUE));
-		panel_1.add(textField);
 		textField.setColumns(10);
 
 		JPanel buttonPanel = new JPanel();
