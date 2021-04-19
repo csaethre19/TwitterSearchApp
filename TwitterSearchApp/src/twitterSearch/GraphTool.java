@@ -92,9 +92,9 @@ public class GraphTool {
 		// Drawing Followers Nodes
 		for (String key : st.keys()) {
 			StdDraw.setPenColor(StdDraw.WHITE);
-			StdDraw.filledCircle(st.get(key).getX(), st.get(key).getY(), .07);
+			StdDraw.filledCircle(st.get(key).getX(), st.get(key).getY(), .1);
 			StdDraw.setPenColor(StdDraw.BLUE);
-			StdDraw.circle(st.get(key).getX(), st.get(key).getY(), .07);
+			StdDraw.circle(st.get(key).getX(), st.get(key).getY(), .1);
 			StdDraw.text(st.get(key).getX(), st.get(key).getY(), key);
 		}
 
