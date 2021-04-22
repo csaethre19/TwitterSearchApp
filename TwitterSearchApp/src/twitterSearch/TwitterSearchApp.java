@@ -177,7 +177,16 @@ public class TwitterSearchApp extends JFrame {
 		trendsButton.setEnabled(true);
 		trendsButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO
+				if (textField.getText().equals("")) {
+					JOptionPane.showInternalMessageDialog(null, "Please enter a query before clicking search.");
+				} else if (comboBox.getSelectedItem().equals("Location")) {
+					TrendsSearch trend = new TrendsSearch(twitter, textField.getText());
+					String location = "";
+					for (String tweet : trend.getTrendsInformation()) {
+						location += tweet + "\n";
+					}
+					textPane.setText(location);
+				}
 			}
 		});
 		buttonPanel.add(trendsButton);
@@ -191,6 +200,10 @@ public class TwitterSearchApp extends JFrame {
 
 		// Results label.
 		JLabel resultsLabel = new JLabel("Results");
+		designResultsBox(scrollPane, resultsLabel);
+	}
+
+	private void designResultsBox(JScrollPane scrollPane, JLabel resultsLabel) {
 		resultsLabel.setForeground(Color.WHITE);
 		resultsLabel.setOpaque(true);
 		resultsLabel.setBackground(Color.BLUE);
@@ -206,9 +219,7 @@ public class TwitterSearchApp extends JFrame {
 	private void createComboBox(JComboBox<String> comboBox) {
 		comboBox.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		comboBox.setPrototypeDisplayValue("Select...");
-		comboBox.addItem("Select");
-		comboBox.addItem("Person");
-		comboBox.addItem("Query");
+		addToCombobox(comboBox);
 		comboBox.addActionListener(new ActionListener() {
 			/**
 			 * 
@@ -219,6 +230,13 @@ public class TwitterSearchApp extends JFrame {
 
 			}
 		});
+	}
+
+	private void addToCombobox(JComboBox<String> comboBox) {
+		comboBox.addItem("Select");
+		comboBox.addItem("Person");
+		comboBox.addItem("Query");
+		comboBox.addItem("Location");
 	}
 
 }
