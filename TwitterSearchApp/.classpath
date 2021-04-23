@@ -6,7 +6,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/charl/Desktop/programming/TwitterSearchApp/TwitterSearchApp/lib/twitter4j-core-4.0.7.jar"/>
-	<classpathentry kind="lib" path="C:/Users/charl/Desktop/programming/TwitterSearchApp/TwitterSearchApp/lib/algs4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/charl/OneDrive/Desktop/programming/TwitterSearchApp/TwitterSearchApp/lib/algs4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/charl/OneDrive/Desktop/programming/TwitterSearchApp/TwitterSearchApp/lib/twitter4j-core-4.0.7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

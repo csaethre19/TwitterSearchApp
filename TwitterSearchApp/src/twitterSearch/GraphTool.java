@@ -2,6 +2,7 @@ package twitterSearch;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,8 +13,9 @@ import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.SymbolGraph;
 
 /**
- * Provides functionality to create a graph based on Twitter followers specified by user query.
- * Supports functionality to draw users connected by edges in graphical representation. 
+ * Provides functionality to create a graph based on Twitter followers specified
+ * by user query. Supports functionality to draw users connected by edges in
+ * graphical representation.
  * 
  * @author Charlotte Saethre
  *
@@ -61,34 +63,43 @@ public class GraphTool {
 		StdDraw.setPenRadius(.01);
 
 		// Coordinates List
-		List<Coordinate> coordinates = Arrays.asList(
-				new Coordinate(.15, .75),
-				new Coordinate(.35, .85),
-				new Coordinate(.65, .85),
-				new Coordinate(.85, .75),
-				new Coordinate(.15, .5),
-				new Coordinate(.85, .5),
-				new Coordinate(.15, .25),
-				new Coordinate(.35, .15),
-				new Coordinate(.65, .15),
-				new Coordinate(.85, .25)
-				);
-		
+		List<Coordinate> coordinates = Arrays.asList(new Coordinate(.15, .75), new Coordinate(.35, .85),
+				new Coordinate(.65, .85), new Coordinate(.85, .75), new Coordinate(.15, .5), new Coordinate(.85, .5),
+				new Coordinate(.15, .25), new Coordinate(.35, .15), new Coordinate(.65, .15), new Coordinate(.85, .25));
+
 		// Filling Symbol Table
 		ST<String, Coordinate> st = new ST<>();
 		for (int i = 0; i < followers.size(); i++) {
 			st.put(followers.get(i), coordinates.get(i));
 		}
-		
+
 		// Draw edges
 		for (int v = 0; v < graph.V(); v++) {
 			for (int w : graph.adj(v)) {
 				StdDraw.setPenColor(StdDraw.BLACK);
-				StdDraw.line(st.get(sg.nameOf(v)).getX(), st.get(sg.nameOf(v)).getY(), 
-						st.get(sg.nameOf(w)).getX(), st.get(sg.nameOf(w)).getY());
+				StdDraw.line(st.get(sg.nameOf(v)).getX(), st.get(sg.nameOf(v)).getY(), st.get(sg.nameOf(w)).getX(),
+						st.get(sg.nameOf(w)).getY());
 			}
 		}
-		
+
+		// Detecting cycle
+		Cycle cycle = new Cycle(graph);
+		List<Integer> cycleIndexes = new ArrayList<>();
+
+		if (cycle != null) {
+			for (Integer c : cycle.cycle()) {
+				cycleIndexes.add(c);
+			}
+			for (int i = 0; i < cycleIndexes.size() - 1; i++) {
+				double x1 = st.get(sg.nameOf(cycleIndexes.get(i))).getX();
+				double y1 = st.get(sg.nameOf(cycleIndexes.get(i))).getY();
+				double x2 = st.get(sg.nameOf(cycleIndexes.get(i + 1))).getX();
+				double y2 = st.get(sg.nameOf(cycleIndexes.get(i + 1))).getY();
+				StdDraw.setPenColor(StdDraw.MAGENTA);
+				StdDraw.line(x1, y1, x2, y2);
+			}
+		}
+
 		// Drawing Followers Nodes
 		for (String key : st.keys()) {
 			StdDraw.setPenColor(StdDraw.WHITE);
@@ -99,16 +110,6 @@ public class GraphTool {
 		}
 
 		StdDraw.show();
-	}
-
-	/**
-	 * 
-	 */
-	public void getCycle() {
-		Cycle cycle = new Cycle(graph);
-		for (Integer c : cycle.cycle()) {
-			System.out.println(sg.nameOf(c));
-		}
 	}
 
 	// Helper class to store coordinate information to draw nodes
@@ -135,6 +136,6 @@ public class GraphTool {
 		PersonSearch ps = new PersonSearch(TwitterAuth.getTwitterInstance(), "char_saethre");
 		GraphTool graphTool = new GraphTool(ps.getEdges(), ps.getFollowers());
 		graphTool.drawGraph();
-		// graphTool.getCycle();
+
 	}
 }

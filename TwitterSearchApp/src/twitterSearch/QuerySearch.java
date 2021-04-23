@@ -13,10 +13,7 @@ import twitter4j.TwitterException;
 
 /**
  * Fetches tweets based on a users specified <code>query</code>. Provides
- * functionality to return tweet information to the user. Provides functionality
- * to create edges to be used for graphing with vertices representing users that
- * retweeted a specified tweet and edges representing users that follower one
- * another.
+ * functionality to return tweet information to the user.
  * 
  * When returning returning the results of the tweets to the user they will be
  * sorted by highest retweet count.
@@ -28,7 +25,6 @@ public class QuerySearch {
 	private Twitter twitter;
 	private String query;
 	private List<Status> tweets;
-	// private List<String> edges;
 
 	/**
 	 * Initializes the fields <code>twitter</code> and <code>query</code>. Starts
@@ -40,7 +36,6 @@ public class QuerySearch {
 	public QuerySearch(Twitter twitter, String query) {
 		this.twitter = twitter;
 		this.query = query;
-		// edges = new ArrayList<>();
 		searchQuery();
 	}
 
@@ -91,7 +86,6 @@ public class QuerySearch {
 		}
 	}
 
-	// TODO - find better way to sort by highest retweet here
 	private List<Status> getPriorityTweets() {
 		MaxPQ<Integer> retweetPq = new MaxPQ<>();
 		ST<Integer, Status> st = new ST<>();
