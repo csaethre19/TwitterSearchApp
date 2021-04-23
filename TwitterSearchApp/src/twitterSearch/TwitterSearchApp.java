@@ -119,10 +119,10 @@ public class TwitterSearchApp extends JFrame {
 		createResultsPane(buttonPanel);
 	}
 
-	private void createResultsPane(JPanel buttonPanel) {
+	private void createResultsPane(JPanel searchPanel) {
 		// Creates the option to view all the data.
 		JScrollPane scrollPane = new JScrollPane();
-		buttonPanel.add(scrollPane);
+		searchPanel.add(scrollPane);
 		scrollPane.setBorder(null);
 
 		textPane = new JTextPane();
@@ -162,6 +162,22 @@ public class TwitterSearchApp extends JFrame {
 		btnTrendsButton.setBorder(new EmptyBorder(5, 10, 5, 10));
 		btnTrendsButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
 
+		btnTrendsButton.setEnabled(true);
+		btnTrendsButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (textField.getText().equals("")) {
+					JOptionPane.showInternalMessageDialog(null, "Please enter a query before clicking search.");
+				} else if (comboBox.getSelectedItem().equals("Location")) {
+					TrendsSearch trend = new TrendsSearch(twitter, textField.getText());
+					String location = "";
+					for (String tweet : trend.getTrendsInformation()) {
+						location += tweet + "\n";
+					}
+					textPane.setText(location);
+				}
+			}
+		});
+		//buttonPanel.add(trendsButton);
 	}
 
 	private void createGraphButton(JPanel searchPanel) {
