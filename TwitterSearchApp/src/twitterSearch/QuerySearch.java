@@ -46,7 +46,7 @@ public class QuerySearch {
 	 */
 	private void searchQuery() {
 		Query q = new Query(query);
-		q.setCount(100);
+		q.setCount(20);
 		QueryResult result;
 
 		try {
@@ -69,7 +69,7 @@ public class QuerySearch {
 		List<String> results = new ArrayList<>();
 
 		int count = 1;
-		for (Status tweet : getPriorityTweets()) {
+		for (Status tweet : tweets) {
 			results.add("TWEET " + count + ": " + tweet.getText() + "\nUSER: " + tweet.getUser().getName()
 					+ "\nRetweet Count: " + tweet.getRetweetCount() + "\nFavorite Count: " + tweet.getFavoriteCount()
 					+ "\n" + tweet.getCreatedAt() + "\n-------------------------------------------");
@@ -80,12 +80,16 @@ public class QuerySearch {
 		return results;
 	}
 
+	/**
+	 * Display tweets to console for testing purpposes.
+	 */
 	public void printTweets() {
 		for (String tweet : getTweetsInformation()) {
 			System.out.println(tweet);
 		}
 	}
 
+	// Sorts tweets by highest retweet count.
 	private List<Status> getPriorityTweets() {
 		MaxPQ<Integer> retweetPq = new MaxPQ<>();
 		ST<Integer, Status> st = new ST<>();

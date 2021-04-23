@@ -27,6 +27,13 @@ public class GraphTool {
 	private SymbolGraph sg;
 	private final String FILE_PATH = "src/twitterSearch/Resources/graph.txt";
 
+	/**
+	 * Constructs a symbol graph given a list of <code>edges</code> and a list of
+	 * <code>followers</code>
+	 * 
+	 * @param edges list of edges
+	 * @param followers list of followers
+	 */
 	public GraphTool(List<String> edges, List<String> followers) {
 		this.edges = edges;
 		this.followers = followers;
