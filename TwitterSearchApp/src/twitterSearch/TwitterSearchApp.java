@@ -166,8 +166,12 @@ public class TwitterSearchApp extends JFrame {
 		btnTrendsButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (textField.getText().equals("")) {
-					JOptionPane.showInternalMessageDialog(null, "Please enter a query before clicking search.");
-				} else if (comboBox.getSelectedItem().equals("Location")) {
+					JOptionPane.showInternalMessageDialog(null, "Please enter a location before clicking trends.");
+				} 
+				else if (!comboBox.getSelectedItem().equals("Location")) {
+					JOptionPane.showInternalMessageDialog(null, "Please select location if you want to see trends.");
+				}
+				else if (comboBox.getSelectedItem().equals("Location")) {
 					TrendsSearch trend = new TrendsSearch(twitter, textField.getText());
 					String location = "";
 					for (String tweet : trend.getTrendsInformation()) {
@@ -177,7 +181,7 @@ public class TwitterSearchApp extends JFrame {
 				}
 			}
 		});
-		//buttonPanel.add(trendsButton);
+		// buttonPanel.add(trendsButton);
 	}
 
 	private void createGraphButton(JPanel searchPanel) {
@@ -201,7 +205,7 @@ public class TwitterSearchApp extends JFrame {
 					GraphTool graphTool = new GraphTool(person.getEdges(), person.getFollowers());
 					graphTool.drawGraph();
 				}
-
+				btnGraphButton.setEnabled(false);
 			}
 
 		});

@@ -100,7 +100,7 @@ public class PersonSearch {
 
 						// Deal with rate limit
 						RateLimitStatus relRateLimit = rel.getRateLimitStatus();
-
+						
 						if (relRateLimit.getRemaining() == 1) {
 							exceeded = true;
 							break;
@@ -117,6 +117,7 @@ public class PersonSearch {
 			}
 		} catch (TwitterException e) {
 			System.out.println("Rate limit exceeded, please try again in 15 minutes. Thank you.");
+			System.out.println(e.getRateLimitStatus());
 		}
 	}
 

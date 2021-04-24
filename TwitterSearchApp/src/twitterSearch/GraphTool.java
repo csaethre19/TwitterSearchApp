@@ -31,7 +31,7 @@ public class GraphTool {
 	 * Constructs a symbol graph given a list of <code>edges</code> and a list of
 	 * <code>followers</code>
 	 * 
-	 * @param edges list of edges
+	 * @param edges     list of edges
 	 * @param followers list of followers
 	 */
 	public GraphTool(List<String> edges, List<String> followers) {
@@ -65,6 +65,8 @@ public class GraphTool {
 	 * Shows graphical representation of followers and their connections.
 	 */
 	public void drawGraph() {
+		if (graph == null) 
+			throw new NullPointerException("graph is null.");
 		// Set canvas and pen radius
 		StdDraw.setCanvasSize(700, 700);
 		StdDraw.setPenRadius(.01);
@@ -91,9 +93,8 @@ public class GraphTool {
 
 		// Detecting cycle
 		Cycle cycle = new Cycle(graph);
-		List<Integer> cycleIndexes = new ArrayList<>();
-
-		if (cycle != null) {
+		if (cycle.hasCycle()) {
+			List<Integer> cycleIndexes = new ArrayList<>();
 			for (Integer c : cycle.cycle()) {
 				cycleIndexes.add(c);
 			}
@@ -140,7 +141,7 @@ public class GraphTool {
 
 	/********** TEST CLIENT **********/
 	public static void main(String[] args) {
-		PersonSearch ps = new PersonSearch(TwitterAuth.getTwitterInstance(), "char_saethre");
+		PersonSearch ps = new PersonSearch(TwitterAuth.getTwitterInstance(), "SiLvErFoX_69_");
 		GraphTool graphTool = new GraphTool(ps.getEdges(), ps.getFollowers());
 		graphTool.drawGraph();
 

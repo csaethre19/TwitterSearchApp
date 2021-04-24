@@ -69,7 +69,7 @@ public class QuerySearch {
 		List<String> results = new ArrayList<>();
 
 		int count = 1;
-		for (Status tweet : tweets) {
+		for (Status tweet : getPriorityTweets()) {
 			results.add("TWEET " + count + ": " + tweet.getText() + "\nUSER: " + tweet.getUser().getName()
 					+ "\nRetweet Count: " + tweet.getRetweetCount() + "\nFavorite Count: " + tweet.getFavoriteCount()
 					+ "\n" + tweet.getCreatedAt() + "\n-------------------------------------------");
@@ -110,7 +110,10 @@ public class QuerySearch {
 	/********** TEST CLIENT **********/
 	public static void main(String[] args) {
 		Twitter twitter = TwitterAuth.getTwitterInstance();
+		long startTime = System.nanoTime();
 		QuerySearch qs = new QuerySearch(twitter, "Elon Musk");
+		double elapsedTime = (System.nanoTime() - startTime) / 1_000_000d;
+		System.out.println("Elapsed Time: " + elapsedTime + "ms");
 		qs.printTweets();
 
 	}

@@ -14,7 +14,6 @@ import twitter4j.TwitterException;
  * Detects the leading trends based on the user specified <code> location </code>.
  * 
  * @author Briana Murdock
- * @author Charlotte Saethre
  *
  */
 public final class TrendsSearch {
@@ -120,7 +119,6 @@ public final class TrendsSearch {
 
 	/************************* TEST CLIENT ***************************************/
 	public static void main(String[] args) {
-
 		Twitter twitter = TwitterAuth.getTwitterInstance();
 		TrendsSearch trendsSearch = new TrendsSearch(twitter, "united states");
 		trendsSearch.printTrends();
